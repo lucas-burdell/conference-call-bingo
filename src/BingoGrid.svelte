@@ -1,11 +1,12 @@
 <script lang="ts">
     import { fly } from "svelte/transition";
     import BingoCell from "./BingoCell.svelte";
-    import { BingoLabels } from "./BingoLabels";
+    import { GetStateLabels } from "./BingoLabels";
     import { CheckForBingo } from "./BingoUtils";
     const size = 5;
 
     let state: boolean[][] = [];
+    let stateLabels: string[][] = [];
     setupState();
     $: bingo = CheckForBingo(state);
 
@@ -17,6 +18,7 @@
             }
             state[i] = newValue;
         }
+        stateLabels = GetStateLabels();
     }
 
     function updateState(x: number, y: number, value: boolean) {
@@ -41,7 +43,7 @@
         <div class="bingo-row">
             {#each row as value, y}
                 <BingoCell {value} on:click={() => updateState(x, y, !value)}>
-                    {BingoLabels[x][y]}
+                    {stateLabels[x][y]}
                 </BingoCell>
             {/each}
         </div>
